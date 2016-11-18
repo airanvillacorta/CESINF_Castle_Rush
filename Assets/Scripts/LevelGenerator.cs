@@ -89,31 +89,99 @@ public class LevelGenerator : MonoBehaviour {
 		for (int i=1; i<cRooms.Count;i++){
 
 			Room room=cRooms[i];
-
-			if(cRooms[i-1].width==1){
+            float x=0f;
+            float y = 0f;
+            if (cRooms[i-1].width==1){
 				if(room.width==1){
-					
-					MoveGen(0,2.05f,room.width);
+                    x = 2.05f;
+                    
 				}
 				else if(room.width==2){
-					
-					MoveGen(0,3.05f,room.width);
+
+                    x = 3.05f;
 					}
 			}
 			else if(cRooms[i-1].width==2) {
 				if(room.width==1){
-					
-					MoveGen(0,2.05f,room.width);
+
+                    x = 3.06f;
 				}
 				else if(room.width==2){
-					
-					
-					MoveGen(0,4.08f,room.width);
+                    x = 4.08f;
 				}
-
+                //0.42
 
 			}
-			CreateRoom(room.name);
+
+            if (cRooms[i - 1].height == 2)
+            {
+                if (cRooms[i - 1].name == 3)
+                {
+                    y = 0.42f;
+
+                    if (room.name == 3)
+                    {
+                        y = 0.42f * 2f;
+
+                    }
+                    if (room.name == 4)
+                    {
+                        y = 0;
+
+                    }
+                }
+                if (cRooms[i - 1].name == 4)
+                {
+                    y = -0.42f;
+                    if (room.name == 3)
+                    {
+                        y = 0;
+
+                    }
+                    if (room.name == 4)
+                    {
+                        y = -0.42f * 2f;
+                    }
+                }
+
+                /*if (room.height == 2)
+                {
+                    if (room.name == 3)
+                    {
+                        y = 0.42f*2f;
+
+                    }
+                    if (room.name == 4)
+                    {
+                        y = -0.42f*2f;
+                    }
+
+                }*/
+
+
+
+            }
+            else
+            {
+                if (room.height == 2)
+                {
+                    if (room.name == 3)
+                    {
+                        y = 0.42f;
+
+                    }
+                    if (room.name == 4)
+                    {
+                        y = -0.42f;
+                    }
+
+                }
+            }  
+
+
+
+            MoveGen(0, x,y, room.width);
+            CreateRoom(room.name);
 			yield return new WaitForSeconds(waitTime);
 			
 		}
@@ -122,17 +190,17 @@ public class LevelGenerator : MonoBehaviour {
 
 
 	//move the level generator to a direction up down right left
-	void MoveGen(int dir,float offs,int width){
+	void MoveGen(int dir,float offsX, float offsY, int width){
 	
 		switch(dir)
 		{
 			case 0:{
-			transform.position=new Vector3(transform.position.x+(offs),transform.position.y);
+			transform.position=new Vector3(transform.position.x+(offsX),transform.position.y + (offsY));
 			}
 			break;
 			case 1:{
 			
-			transform.position=new Vector3(transform.position.x-(offs*width),transform.position.y);
+			transform.position=new Vector3(transform.position.x-(offsX*width),transform.position.y);
 			}
 			break;
 
