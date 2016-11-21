@@ -6,15 +6,16 @@ public class LevelGenerator : MonoBehaviour {
 
 
 	public GameObject[] rooms;
-	public List<Vector3> createdRooms;
+	public List<GameObject> createdRooms;
 	private List<Room> cRooms;
 	public int roomAmount;
 	public float roomOffset;
 
 	public float waitTime;
 
-	// Use this for initialization
-	void Start () {
+    public GameObject door;
+    // Use this for initialization
+    void Start () {
 		createRooms();
 		StartCoroutine (GenerateLevel ());
 		//yield return 0;
@@ -39,26 +40,29 @@ public class LevelGenerator : MonoBehaviour {
 				
 			case 0:
 			{
-				room.addPath(cRooms[cRooms.Count-1],1);
+				room.addPath(1);
 			}
 				break;
 			case 1:
 			{
-				room.addPath(cRooms[cRooms.Count-1],1);
+				room.addPath(1);
 			}
 				break;
 			case 2:
 			{
 				
-				room.addPath(cRooms[cRooms.Count-1],3);
+				room.addPath(3);
 			}
 				break;
 			
 			
 			}
+            if (i == roomAmount)
+            {
+                room.closePaths();
+            }
 
-
-			List<int>paths=cRooms[cRooms.Count-1].getPathAvailable();
+            List<int>paths=cRooms[cRooms.Count-1].getPathAvailable();
 			
 			int path= Random.Range (0,paths.Count);
 
@@ -72,8 +76,11 @@ public class LevelGenerator : MonoBehaviour {
 				MoveGen(dir,3.05f,room.width);
 			}*/
 
-			cRooms[cRooms.Count-1].addPath(room,path);
+			cRooms[cRooms.Count-1].addPath(path);
+            
 			cRooms.Add(room);
+
+
 			//CreateRoom(r);
 
 			//yield return new WaitForSeconds(waitTime);
@@ -84,9 +91,11 @@ public class LevelGenerator : MonoBehaviour {
 	IEnumerator GenerateLevel(){
 
 
-		
-		CreateRoom(cRooms[0].name);
-		for (int i=1; i<cRooms.Count;i++){
+      //  CreateDoor(cRooms[0], false);
+
+        CreateRoom(cRooms[0].rName, 0);
+
+        for (int i=1; i<cRooms.Count;i++){
 
 			Room room=cRooms[i];
             float x=0f;
@@ -115,30 +124,30 @@ public class LevelGenerator : MonoBehaviour {
 
             if (cRooms[i - 1].height == 2)
             {
-                if (cRooms[i - 1].name == 3)
+                if (cRooms[i - 1].rName == 3)
                 {
                     y = 0.42f;
 
-                    if (room.name == 3)
+                    if (room.rName == 3)
                     {
                         y = 0.42f * 2f;
 
                     }
-                    if (room.name == 4)
+                    if (room.rName == 4)
                     {
                         y = 0;
 
                     }
                 }
-                if (cRooms[i - 1].name == 4)
+                if (cRooms[i - 1].rName == 4)
                 {
                     y = -0.42f;
-                    if (room.name == 3)
+                    if (room.rName == 3)
                     {
                         y = 0;
 
                     }
-                    if (room.name == 4)
+                    if (room.rName == 4)
                     {
                         y = -0.42f * 2f;
                     }
@@ -165,12 +174,12 @@ public class LevelGenerator : MonoBehaviour {
             {
                 if (room.height == 2)
                 {
-                    if (room.name == 3)
+                    if (room.rName == 3)
                     {
                         y = 0.42f;
 
                     }
-                    if (room.name == 4)
+                    if (room.rName == 4)
                     {
                         y = -0.42f;
                     }
@@ -181,11 +190,20 @@ public class LevelGenerator : MonoBehaviour {
 
 
             MoveGen(0, x,y, room.width);
-            CreateRoom(room.name);
+            CreateRoom(room.rName, i);
 			yield return new WaitForSeconds(waitTime);
 			
 		}
-		yield return 0;
+
+
+
+        /*  for (int i = 1; i < cRooms.Count; i++)
+          {
+
+             cRooms[i].CreateDoors();
+          }*/
+        CreateDoors();
+            yield return 0;
 	}
 
 
@@ -207,16 +225,32 @@ public class LevelGenerator : MonoBehaviour {
 		}
 	}
 
-	void CreateRoom(int roomIndex){
+	void CreateRoom(int roomIndex, int i){
 
-		if (!createdRooms.Contains (transform.position)) {
-			GameObject roomObj;
-			roomObj = Instantiate (rooms [roomIndex], transform.position, transform.rotation) as GameObject;
-			createdRooms.Add (roomObj.transform.position);
-		} 
-		else {
-			roomAmount++;
-		}
+            GameObject roomObj;
+			roomObj = Instantiate (rooms [roomIndex],  transform.position , transform.rotation) as GameObject;
+			createdRooms.Add (roomObj);
+            Room r =roomObj.GetComponent<Room>();
+        if(i== cRooms.Count-1)
+        {
+            r.isEnd = true;
 
-	}
+        }
+            
+    }
+    
+    void CreateDoors()
+    {
+
+        for (int i = 0; i < createdRooms.Count; i++)
+        {
+
+            Room r = createdRooms[i].GetComponent<Room>();
+            r.CreateDoors();
+        }
+
+        
+        
+
+    }
 }
