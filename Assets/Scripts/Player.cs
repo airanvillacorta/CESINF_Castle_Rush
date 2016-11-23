@@ -188,6 +188,7 @@ public class Player : MonoBehaviour
             currentHealth -= dmg;
             //animator.Play("Player_RedFlash");
             gameObject.GetComponent<Animation>().Play("Player_RedFlash");
+          
         }
 
     }
@@ -203,7 +204,7 @@ public class Player : MonoBehaviour
 
             timer += Time.deltaTime;
 
-            rib2d.AddForce(new Vector3(knockbackDir.x * -100, knockbackDir.y * knockbackPwr, transform.position.z));
+            rib2d.AddForce(new Vector3(knockbackDir.x * -20, knockbackDir.y * knockbackPwr, transform.position.z));
 
         }
 
