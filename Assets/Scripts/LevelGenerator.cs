@@ -202,7 +202,7 @@ public class LevelGenerator : MonoBehaviour {
 
              cRooms[i].CreateDoors();
           }*/
-        CreateDoors();
+		CreateObjects();
             yield return 0;
 	}
 
@@ -239,7 +239,7 @@ public class LevelGenerator : MonoBehaviour {
             
     }
     
-    void CreateDoors()
+    void CreateObjects()
     {
 
         for (int i = 0; i < createdRooms.Count; i++)
@@ -247,6 +247,9 @@ public class LevelGenerator : MonoBehaviour {
 
             Room r = createdRooms[i].GetComponent<Room>();
             r.CreateDoors();
+			r.CreateCoins();
+			r.CreateHeart();
+			r.CreateEnemy();
         }
 
         

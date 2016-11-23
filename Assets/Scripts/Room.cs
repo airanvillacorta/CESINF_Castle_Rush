@@ -14,6 +14,11 @@ public class Room : MonoBehaviour {
     
     public GameObject door;
     public GameObject doorEnd;
+
+
+	public GameObject[] CoinsPatterns;
+	public GameObject[] EnemyPatterns;
+	public GameObject[] HeartPatterns;
     // Use this for initialization
     void Start () {
 		int count=1;
@@ -153,7 +158,6 @@ public class Room : MonoBehaviour {
                                 {
                                     
                                     roomObj = Instantiate(door, new Vector3(transform.position.x + 0.62f + (1.02f * (width - 1)), transform.position.y - 0.03f + (pathAvailable[i] / 2 * 1f) - (1.58f * (height - 1)), 0), transform.rotation) as GameObject;
-
                                 }
                                 break;
                             case 2:
@@ -201,6 +205,10 @@ public class Room : MonoBehaviour {
                                 break;
                         }
                     }
+
+                    Door d = roomObj.GetComponent<Door>();
+                    d.isLeft = false;
+
                 }
                 //left door
                 else
@@ -233,6 +241,8 @@ public class Room : MonoBehaviour {
                     }
 
 
+                    Door d = roomObj.GetComponent<Door>();
+                    d.isLeft = true;
 
                 }
             
@@ -244,7 +254,39 @@ public class Room : MonoBehaviour {
 
     }
 
+	public void CreateCoins(){
 
+		if (CoinsPatterns.Length > 0) {
+			int r = Random.Range (0, CoinsPatterns.Length);
+			GameObject coinP = Instantiate (CoinsPatterns [r], transform.position, transform.rotation) as GameObject;
+
+			coinP.transform.parent = transform;
+		}
+	}
+	public void CreateHeart(){
+
+		if (HeartPatterns.Length > 0) {
+			int r = Random.Range (0, HeartPatterns.Length);
+			int heartChance = Random.Range (0, 11);
+			if (heartChance < 3) {
+				GameObject heartP = Instantiate (HeartPatterns [r], transform.position, transform.rotation) as GameObject;
+
+				heartP.transform.parent = transform;
+			}
+		}
+
+	}
+	public void CreateEnemy(){
+		if (EnemyPatterns.Length > 0) {
+			int r = Random.Range (0, EnemyPatterns.Length);
+			int enemyChance = Random.Range (0, 11);
+			if (enemyChance > 3) {
+				GameObject enemyP = Instantiate (EnemyPatterns [r], transform.position, transform.rotation) as GameObject;
+
+				enemyP.transform.parent = transform;
+			}
+		}
+	}
     // Update is called once per frame
     void Update () {
 	
