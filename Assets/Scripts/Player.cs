@@ -224,6 +224,7 @@ public class Player : MonoBehaviour
     public void addCoins(int c)
     {
 
+        SoundManager.instance.PlayingSound("GetCoin");
         coins += c;
 
     }
