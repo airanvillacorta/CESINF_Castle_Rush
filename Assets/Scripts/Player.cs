@@ -11,14 +11,14 @@ public class Player : MonoBehaviour
     private bool attacking = false;
     private bool doorIn = false;
     private bool doorOut = false;
-
+    private bool dead = false;
     private float attackTimer = 0;
     private float attaclCd = 0.3f;
 
     public Collider2D attackTrigger;
     //public Collider2D playerCollectTrigger;
 
-    public float currentHealth;
+    public int currentHealth;
     public int maxHealth;
 
     private Rigidbody2D rib2d;
@@ -62,12 +62,13 @@ public class Player : MonoBehaviour
         animator.SetBool("DoorIn", doorIn);
         animator.SetBool("DoorOut", doorOut);
 
-        if (Input.GetAxis("Horizontal") < -0.1f && !doorIn && !doorOut)
+        animator.SetBool("Dead", dead);
+        if (Input.GetAxis("Horizontal") < -0.1f && !doorIn && !doorOut && !dead)
             transform.localScale = new Vector3(1, 1, 1);
-        if (Input.GetAxis("Horizontal") > 0.1f && !doorIn && !doorOut)
+        if (Input.GetAxis("Horizontal") > 0.1f && !doorIn && !doorOut && !dead)
             transform.localScale = new Vector3(-1, 1, 1);
 
-        if (Input.GetButtonDown("Jump") && grounded && !doorIn && !doorOut)
+        if (Input.GetButtonDown("Jump") && grounded && !doorIn && !doorOut && !dead)
         {
             rib2d.AddForce(Vector2.up * jumpPower);
         }
@@ -75,11 +76,11 @@ public class Player : MonoBehaviour
         if (currentHealth > maxHealth)
             currentHealth = maxHealth;
         if (currentHealth <= 0)
-            Die();
+            StartCoroutine(Die());
 
 
 
-        if (Input.GetButtonDown("Fire1") && !attacking && !doorIn && !doorOut)
+        if (Input.GetButtonDown("Fire1") && !attacking && !doorIn && !doorOut && !dead)
         {
             attacking = true;
             attackTimer = attaclCd;
@@ -162,7 +163,7 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
 
-        if (!doorIn && !doorOut)
+        if (!doorIn && !doorOut && !dead)
         {
             float h = Input.GetAxis("Horizontal");
 
@@ -176,17 +177,25 @@ public class Player : MonoBehaviour
 
     }
 
-    void Die()
+    IEnumerator Die()
     {
-        Application.LoadLevel(Application.loadedLevel);
+        dead = true;
+
+        yield return new WaitForSeconds(2f);
+        Application.LoadLevel(3);
     }
 
     public void Damage(int dmg)
     {
-        if (!doorIn && !doorOut)
+        if (!doorIn && !doorOut && !dead)
         {
-            currentHealth -= dmg;
-            //animator.Play("Player_RedFlash");
+            if (currentHealth - dmg > 0)
+            {
+                currentHealth -= dmg;
+            }
+            else {
+                currentHealth = 0;
+            }
             gameObject.GetComponent<Animation>().Play("Player_RedFlash");
           
         }
