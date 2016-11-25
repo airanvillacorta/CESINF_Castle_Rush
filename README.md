@@ -11,6 +11,6 @@ Hemos Generado ejecutables para las siguientes plataformas:
 
 Windows: [Descarga aqui](https://drive.google.com/file/d/0Bx6NqVGebfJDQUNRZkF6Q2lWdEk/view?usp=sharing)
 
-Linux:[Descarga aqui](https://drive.google.com/file/d/0Bx6NqVGebfJDcDluS2cxZ1BXTUk/view?usp=sharing) 
+Linux: [Descarga aqui](https://drive.google.com/file/d/0Bx6NqVGebfJDcDluS2cxZ1BXTUk/view?usp=sharing) 
 
 OS X: [Descarga aqui](https://drive.google.com/file/d/0Bx6NqVGebfJDV2NsQkQybXJLdnM/view?usp=sharing)
