@@ -8,7 +8,6 @@ La tecnologia que se uso para el desarrollo del juego es el Unity Game Engine ad
 ## Enlaces para descargar el juego
 
 Hemos Generado ejecutables para las siguientes plataformas:
-
-1. Windows:https://drive.google.com/file/d/0Bx6NqVGebfJDQUNRZkF6Q2lWdEk/view?usp=sharing
-2. Linux: https://drive.google.com/file/d/0Bx6NqVGebfJDcDluS2cxZ1BXTUk/view?usp=sharing
-3. OS X: https://drive.google.com/file/d/0Bx6NqVGebfJDV2NsQkQybXJLdnM/view?usp=sharing
+1. Windows: [Descarga aqui](https://drive.google.com/file/d/0Bx6NqVGebfJDQUNRZkF6Q2lWdEk/view?usp=sharing)
+2. Linux:[Descarga aqui](https://drive.google.com/file/d/0Bx6NqVGebfJDcDluS2cxZ1BXTUk/view?usp=sharing) 
+3. OS X: [Descarga aqui](https://drive.google.com/file/d/0Bx6NqVGebfJDV2NsQkQybXJLdnM/view?usp=sharing)
