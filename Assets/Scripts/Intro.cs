@@ -12,7 +12,12 @@ public class Intro : MonoBehaviour {
         StartCoroutine(Wait(movTexture.duration));
     }
 
+    void Update()
+    {
 
+        if (Input.GetButtonDown("Pause"))
+            LoadMenu();
+    }
 
     private IEnumerator Wait(float duration)
     {

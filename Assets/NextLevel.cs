@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class GameOver : MonoBehaviour
+public class NextLevel : MonoBehaviour
 {
     public MovieTexture movTexture;
     void Start()
@@ -32,7 +32,7 @@ public class GameOver : MonoBehaviour
     public void LoadGame()
     {
 
-        Application.LoadLevel(2);
+        Application.LoadLevel(6);
     }
 }
 

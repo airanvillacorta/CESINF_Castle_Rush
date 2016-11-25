@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Door : MonoBehaviour
 {
-
+    public bool isEnd;
     public bool isLeft;
     private Player player;
     // Use this for initialization
@@ -18,8 +18,17 @@ public class Door : MonoBehaviour
         {
             if (Input.GetButtonDown("Up"))
             {
-                StartCoroutine(player.EnterDoor(isLeft, transform.position.x));
+                if (isEnd)
+                {
 
+                    PlayerPrefs.SetInt("Coins", GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().coins);
+                    PlayerPrefs.SetInt("Hearts", GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().currentHealth);
+                    Application.LoadLevel(4);
+                }
+                else {
+
+                    StartCoroutine(player.EnterDoor(isLeft, transform.position.x));
+                }
             }
 
         }
@@ -33,7 +42,18 @@ public class Door : MonoBehaviour
             if (Input.GetButtonDown("Up"))
             {
 
-                StartCoroutine(player.EnterDoor(isLeft, transform.position.x));
+                if (isEnd)
+                {
+
+                    PlayerPrefs.SetInt("Coins", GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().coins);
+                    PlayerPrefs.SetInt("Hearts", GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().currentHealth);
+                    Application.LoadLevel(4);
+                }
+                else
+                {
+
+                    StartCoroutine(player.EnterDoor(isLeft, transform.position.x));
+                }
             }
         }
 

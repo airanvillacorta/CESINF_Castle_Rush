@@ -191,7 +191,7 @@ public class LevelGenerator : MonoBehaviour {
 
             MoveGen(0, x,y, room.width);
             CreateRoom(room.rName, i);
-			yield return new WaitForSeconds(waitTime);
+			yield return new WaitForSeconds(0.1f);
 			
 		}
 
