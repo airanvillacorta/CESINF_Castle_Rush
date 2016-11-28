@@ -19,6 +19,9 @@ public class Room : MonoBehaviour {
 	public GameObject[] CoinsPatterns;
 	public GameObject[] EnemyPatterns;
 	public GameObject[] HeartPatterns;
+
+
+    public GameObject Shop;
     // Use this for initialization
     void Start () {
 		int count=1;

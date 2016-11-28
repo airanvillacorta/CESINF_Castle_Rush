@@ -11,12 +11,17 @@ public class LevelGenerator : MonoBehaviour {
 	public int roomAmount;
 	public float roomOffset;
 
-	public float waitTime;
+    public GameObject shop;
+    public float waitTime;
 
     public GameObject door;
     // Use this for initialization
     void Start () {
+
         roomAmount= roomAmount+( PlayerPrefs.GetInt("Level")*2);
+        if (roomAmount > 25) {
+            roomAmount = 25;
+        }
         createRooms();
 		StartCoroutine (GenerateLevel ());
 		//yield return 0;
@@ -29,13 +34,19 @@ public class LevelGenerator : MonoBehaviour {
 		cRooms = new List<Room> ();
 		//CreateRoom(0);
 		cRooms.Add(room);
-		//MoveGen(dir,room.width);
-		for (int i=1; i<roomAmount;i++){
-			dir=Random.Range(0,1);//left right
-			int r= Random.Range (1,rooms.Length);
-			
-			room=rooms[r].GetComponent<Room>();
+        //MoveGen(dir,room.width);
+        for (int i = 1; i < roomAmount; i++)
+        {
+            dir = Random.Range(0, 1);//left right
+            int r = Random.Range(1, rooms.Length);
 
+            if (i != roomAmount-1) { 
+                room = rooms[r].GetComponent<Room>();
+            }
+            else 
+            {
+                room =shop.GetComponent<Room>();
+            }
 
 			switch (room.type) {
 				
@@ -99,6 +110,8 @@ public class LevelGenerator : MonoBehaviour {
         for (int i=1; i<cRooms.Count;i++){
 
 			Room room=cRooms[i];
+          
+
             float x=0f;
             float y = 0f;
             if (cRooms[i-1].width==1){
@@ -196,13 +209,7 @@ public class LevelGenerator : MonoBehaviour {
 			
 		}
 
-
-
-        /*  for (int i = 1; i < cRooms.Count; i++)
-          {
-
-             cRooms[i].CreateDoors();
-          }*/
+        
 		CreateObjects();
             yield return 0;
 	}
@@ -229,8 +236,14 @@ public class LevelGenerator : MonoBehaviour {
 	void CreateRoom(int roomIndex, int i){
 
             GameObject roomObj;
-			roomObj = Instantiate (rooms [roomIndex],  transform.position , transform.rotation) as GameObject;
-			createdRooms.Add (roomObj);
+            if (roomIndex != 5) { 
+			    roomObj = Instantiate (rooms [roomIndex],  transform.position , transform.rotation) as GameObject;
+            }
+            else
+            { 
+                roomObj = Instantiate(shop, transform.position, transform.rotation) as GameObject;
+            }
+        createdRooms.Add (roomObj);
             Room r =roomObj.GetComponent<Room>();
         if(i== cRooms.Count-1)
         {

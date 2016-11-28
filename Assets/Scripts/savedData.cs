@@ -9,6 +9,7 @@ public class savedData : MonoBehaviour {
         if (level != 0) {
             GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().coins = PlayerPrefs.GetInt("Coins");
             GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().currentHealth = PlayerPrefs.GetInt("Hearts");
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().actualPowerUp = PlayerPrefs.GetInt("Power");
         }
         else
         {
@@ -16,6 +17,7 @@ public class savedData : MonoBehaviour {
             PlayerPrefs.SetInt("Level", 0);
             PlayerPrefs.SetInt("Coins", GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().coins);
             PlayerPrefs.SetInt("Hearts", GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().currentHealth);
+            PlayerPrefs.SetInt("Power", GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().actualPowerUp);
         }
          
 

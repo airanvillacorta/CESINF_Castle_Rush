@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
@@ -31,11 +32,12 @@ public class Player : MonoBehaviour
     public float bulletSpeed = 100;
     public float bulletTimer;
 
-    public GameObject bullet;
+    public GameObject[] bullets;
 
+    public Transform[] bulletDirections;
     private bool isLeftDoor;
     private float timer = 0;
-
+    public int actualPowerUp = 0;
     bool canDoubleJump;
     bool isLeft=true;
     // Use this for initialization
@@ -301,11 +303,24 @@ public class Player : MonoBehaviour
         Vector2 direction = attackTrigger.transform.position - pos;
         direction.Normalize();
 
-
+        
         GameObject BulletClone;
-        BulletClone = Instantiate(bullet, attackTrigger.transform.position, attackTrigger.transform.rotation) as GameObject;
-        BulletClone.GetComponent<Rigidbody2D>().velocity = rib2d.velocity + direction * bulletSpeed;
+        if (actualPowerUp != 2) { 
+            BulletClone = Instantiate(bullets[actualPowerUp], attackTrigger.transform.position, attackTrigger.transform.rotation) as GameObject;
+            BulletClone.GetComponent<Rigidbody2D>().velocity = rib2d.velocity + direction * bulletSpeed;
+        }
+        else
+        {
+            for(int i=0;i< bulletDirections.Length; i++) { 
+                direction = bulletDirections[i].transform.position - transform.position;
+                direction.Normalize();
 
+
+            
+                BulletClone = Instantiate(bullets[actualPowerUp], attackTrigger.transform.position, attackTrigger.transform.rotation) as GameObject;
+                BulletClone.GetComponent<Rigidbody2D>().velocity = rib2d.velocity + direction * bulletSpeed/2;
+            }
+        }
         bulletTimer = 0;
 
 
@@ -326,4 +341,40 @@ public class Player : MonoBehaviour
         yield return 0;
     }
 
+    public bool BuyHeart(int price)
+    {
+
+
+        if (coins >= price && currentHealth < 6) {
+
+
+            currentHealth += 2;
+            coins -= price;
+            return true;
+        }
+        else
+        {
+
+            return false;
+        }
+    }
+
+    public bool BuyPowerUp(int price,int powerup)
+    {
+
+
+        if (coins >= price && actualPowerUp!=powerup )
+        {
+
+
+            actualPowerUp = powerup;
+            coins -= price;
+            return true;
+        }
+        else
+        {
+
+            return false;
+        }
+    }
 }

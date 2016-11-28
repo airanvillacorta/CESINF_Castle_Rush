@@ -167,6 +167,7 @@ public class BossSkull : MonoBehaviour {
         PlayerPrefs.SetInt("Coins", GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().coins);
         PlayerPrefs.SetInt("Hearts", 6);
         PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level")+1);
+        PlayerPrefs.SetInt("Power", GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().actualPowerUp);
         Application.LoadLevel(5);
     }
     public void Attack()
