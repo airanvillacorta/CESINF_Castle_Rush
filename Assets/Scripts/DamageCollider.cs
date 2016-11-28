@@ -22,7 +22,7 @@ public class DamageCollider : MonoBehaviour
 
             player.Damage(1);
 
-            StartCoroutine(player.Knockback(0.05f, 350, player.transform.position));
+            //StartCoroutine(player.Knockback(0.05f, 350, transform.position));
 
         }
 

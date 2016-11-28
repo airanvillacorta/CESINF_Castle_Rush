@@ -16,7 +16,8 @@ public class LevelGenerator : MonoBehaviour {
     public GameObject door;
     // Use this for initialization
     void Start () {
-		createRooms();
+        roomAmount= roomAmount+( PlayerPrefs.GetInt("Level")*2);
+        createRooms();
 		StartCoroutine (GenerateLevel ());
 		//yield return 0;
 	}

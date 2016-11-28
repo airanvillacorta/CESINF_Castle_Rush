@@ -165,7 +165,8 @@ public class BossSkull : MonoBehaviour {
         yield return new WaitForSeconds(3f);
 
         PlayerPrefs.SetInt("Coins", GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().coins);
-        PlayerPrefs.SetInt("Hearts", GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().currentHealth);
+        PlayerPrefs.SetInt("Hearts", 6);
+        PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level")+1);
         Application.LoadLevel(5);
     }
     public void Attack()

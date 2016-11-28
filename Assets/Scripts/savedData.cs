@@ -12,6 +12,8 @@ public class savedData : MonoBehaviour {
         }
         else
         {
+
+            PlayerPrefs.SetInt("Level", 0);
             PlayerPrefs.SetInt("Coins", GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().coins);
             PlayerPrefs.SetInt("Hearts", GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().currentHealth);
         }

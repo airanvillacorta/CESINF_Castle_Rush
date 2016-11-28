@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: c595f2a6c3edf2143a338b4fda462387
-timeCreated: 1479946123
+timeCreated: 1480291620
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -11,6 +11,7 @@ TextureImporter:
     21300008: Hearts_4
     21300010: Hearts_5
     21300012: Hearts_6
+    21300014: Heart
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -144,6 +145,19 @@ TextureImporter:
         x: 0
         y: 9
         width: 87
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Heart
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 193
+        width: 22
         height: 25
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
