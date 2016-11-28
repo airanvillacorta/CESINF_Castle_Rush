@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
@@ -31,11 +32,14 @@ public class Player : MonoBehaviour
     public float bulletSpeed = 100;
     public float bulletTimer;
 
-    public GameObject bullet;
+    public GameObject[] bullets;
 
+    public Transform[] bulletDirections;
     private bool isLeftDoor;
     private float timer = 0;
-
+    public int actualPowerUp = 0;
+    bool canDoubleJump;
+    bool isLeft=true;
     // Use this for initialization
     void Awake()
     {
@@ -63,14 +67,32 @@ public class Player : MonoBehaviour
         animator.SetBool("DoorOut", doorOut);
 
         animator.SetBool("Dead", dead);
-        if (Input.GetAxis("Horizontal") < -0.1f && !doorIn && !doorOut && !dead)
+        if (Input.GetAxis("Horizontal") < -0.1f && !doorIn && !doorOut && !dead) { 
             transform.localScale = new Vector3(1, 1, 1);
-        if (Input.GetAxis("Horizontal") > 0.1f && !doorIn && !doorOut && !dead)
+            isLeft = true;
+        }
+        if (Input.GetAxis("Horizontal") > 0.1f && !doorIn && !doorOut && !dead) { 
             transform.localScale = new Vector3(-1, 1, 1);
+            isLeft = false;
+        }
 
-        if (Input.GetButtonDown("Jump") && grounded && !doorIn && !doorOut && !dead)
+        if (Input.GetButtonDown("Jump")  && !doorIn && !doorOut && !dead)
         {
-            rib2d.AddForce(Vector2.up * jumpPower);
+            if (grounded)
+            {
+                rib2d.AddForce(Vector2.up * jumpPower);
+                canDoubleJump = true;
+            }
+            else {
+                if (canDoubleJump) { 
+                    canDoubleJump = false;
+                    rib2d.velocity = new Vector2(rib2d.velocity.x, 0);
+                    rib2d.AddForce(Vector2.up * jumpPower/1.25f);
+                    
+                }
+            }
+
+
         }
 
         if (currentHealth > maxHealth)
@@ -205,18 +227,55 @@ public class Player : MonoBehaviour
 
     public IEnumerator Knockback(float knockDur, float knockbackPwr, Vector3 knockbackDir)
     {
+        if (!dead && !doorIn && !doorOut) { 
+            float timer = 0;
+            rib2d.velocity = new Vector2(0, 0);
+            if (!grounded){
+                while (knockDur > timer)
+                {
+            
+                    timer += Time.deltaTime;
 
-        float timer = 0;
-        rib2d.velocity = new Vector2(rib2d.velocity.x, 0);
-        while (knockDur > timer)
-        {
+                    rib2d.AddForce(new Vector3(knockbackDir.x * -300, knockbackDir.y * knockbackPwr, transform.position.z));
+                    if (isLeft)
+                    {
 
-            timer += Time.deltaTime;
+                        rib2d.AddForce(new Vector3(knockbackDir.x * 300, knockbackDir.y * knockbackPwr, transform.position.z));
 
-            rib2d.AddForce(new Vector3(knockbackDir.x * -20, knockbackDir.y * knockbackPwr, transform.position.z));
+                    }
+                    else
+                    {
 
+                        rib2d.AddForce(new Vector3(knockbackDir.x * -300, knockbackDir.y * knockbackPwr, transform.position.z));
+
+
+                    }
+
+                }
+            }
+            else
+                if (knockbackDir.x > transform.position.x) {
+
+                rib2d.velocity = new Vector2(0, 0);
+                rib2d.AddForce(Vector2.left * 250);
+
+                }
+                else{
+
+                rib2d.velocity = new Vector2(0, 0);
+                rib2d.AddForce(Vector2.right * 250);
+
+
+                }
+                /*   while (knockDur > timer)
+                       {
+
+                           timer += Time.deltaTime;
+
+                           rib2d.AddForce(new Vector3(knockbackDir.x * -2000, 0, transform.position.z));
+
+                       }*/
         }
-
         yield return 0;
 
     }
@@ -228,7 +287,12 @@ public class Player : MonoBehaviour
         coins += c;
 
     }
+    public void addHealth(int c)
+    {
+        
+        currentHealth += c;
 
+    }
     public void Throw()
     {
         bulletTimer += Time.deltaTime;
@@ -239,11 +303,24 @@ public class Player : MonoBehaviour
         Vector2 direction = attackTrigger.transform.position - pos;
         direction.Normalize();
 
-
+        
         GameObject BulletClone;
-        BulletClone = Instantiate(bullet, attackTrigger.transform.position, attackTrigger.transform.rotation) as GameObject;
-        BulletClone.GetComponent<Rigidbody2D>().velocity = rib2d.velocity + direction * bulletSpeed;
+        if (actualPowerUp != 2) { 
+            BulletClone = Instantiate(bullets[actualPowerUp], attackTrigger.transform.position, attackTrigger.transform.rotation) as GameObject;
+            BulletClone.GetComponent<Rigidbody2D>().velocity = rib2d.velocity + direction * bulletSpeed;
+        }
+        else
+        {
+            for(int i=0;i< bulletDirections.Length; i++) { 
+                direction = bulletDirections[i].transform.position - transform.position;
+                direction.Normalize();
 
+
+            
+                BulletClone = Instantiate(bullets[actualPowerUp], attackTrigger.transform.position, attackTrigger.transform.rotation) as GameObject;
+                BulletClone.GetComponent<Rigidbody2D>().velocity = rib2d.velocity + direction * bulletSpeed/2;
+            }
+        }
         bulletTimer = 0;
 
 
@@ -264,4 +341,40 @@ public class Player : MonoBehaviour
         yield return 0;
     }
 
+    public bool BuyHeart(int price)
+    {
+
+
+        if (coins >= price && currentHealth < 6) {
+
+
+            currentHealth += 2;
+            coins -= price;
+            return true;
+        }
+        else
+        {
+
+            return false;
+        }
+    }
+
+    public bool BuyPowerUp(int price,int powerup)
+    {
+
+
+        if (coins >= price && actualPowerUp!=powerup )
+        {
+
+
+            actualPowerUp = powerup;
+            coins -= price;
+            return true;
+        }
+        else
+        {
+
+            return false;
+        }
+    }
 }

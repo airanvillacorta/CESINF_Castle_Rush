@@ -19,6 +19,9 @@ public class Room : MonoBehaviour {
 	public GameObject[] CoinsPatterns;
 	public GameObject[] EnemyPatterns;
 	public GameObject[] HeartPatterns;
+
+
+    public GameObject Shop;
     // Use this for initialization
     void Start () {
 		int count=1;
@@ -267,8 +270,8 @@ public class Room : MonoBehaviour {
 
 		if (HeartPatterns.Length > 0) {
 			int r = Random.Range (0, HeartPatterns.Length);
-			int heartChance = Random.Range (0, 11);
-			if (heartChance < 3) {
+			int heartChance = Random.Range (0, 10);
+			if (heartChance < 1) {
 				GameObject heartP = Instantiate (HeartPatterns [r], transform.position, transform.rotation) as GameObject;
 
 				heartP.transform.parent = transform;
@@ -279,8 +282,8 @@ public class Room : MonoBehaviour {
 	public void CreateEnemy(){
 		if (EnemyPatterns.Length > 0) {
 			int r = Random.Range (0, EnemyPatterns.Length);
-			int enemyChance = Random.Range (0, 11);
-			if (enemyChance > 3) {
+			int enemyChance = Random.Range (0, 10);
+			if (enemyChance > 2) {
 				GameObject enemyP = Instantiate (EnemyPatterns [r], transform.position, transform.rotation) as GameObject;
 
 				enemyP.transform.parent = transform;

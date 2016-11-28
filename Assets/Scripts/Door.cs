@@ -47,6 +47,7 @@ public class Door : MonoBehaviour
 
                     PlayerPrefs.SetInt("Coins", GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().coins);
                     PlayerPrefs.SetInt("Hearts", GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().currentHealth);
+                    PlayerPrefs.SetInt("Power", GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().actualPowerUp);
                     Application.LoadLevel(4);
                 }
                 else
