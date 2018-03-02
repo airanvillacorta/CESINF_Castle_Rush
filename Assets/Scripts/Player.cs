@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
     public int actualPowerUp = 0;
     bool canDoubleJump;
     bool isLeft=true;
+	private BoxCollider2D col2d;
     // Use this for initialization
     void Awake()
     {
@@ -52,7 +53,9 @@ public class Player : MonoBehaviour
     void Start()
     {
         rib2d = gameObject.GetComponent<Rigidbody2D>();
-        animator = gameObject.GetComponent<Animator>();
+		animator = gameObject.GetComponent<Animator>();
+		animator = gameObject.GetComponent<Animator>();
+		col2d = gameObject.GetComponent<BoxCollider2D>();
         currentHealth = maxHealth;
     }
 
@@ -61,22 +64,24 @@ public class Player : MonoBehaviour
     {
 
         animator.SetBool("Grounded", grounded);
-        animator.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
+		animator.SetFloat("Speed", Mathf.Abs(ETCInput.GetAxis("Horizontal")));
         animator.SetBool("Throw", attacking);
         animator.SetBool("DoorIn", doorIn);
         animator.SetBool("DoorOut", doorOut);
 
         animator.SetBool("Dead", dead);
-        if (Input.GetAxis("Horizontal") < -0.1f && !doorIn && !doorOut && !dead) { 
+        if (ETCInput.GetAxis("Horizontal") < -0.1f && !doorIn && !doorOut && !dead) { 
             transform.localScale = new Vector3(1, 1, 1);
             isLeft = true;
         }
-        if (Input.GetAxis("Horizontal") > 0.1f && !doorIn && !doorOut && !dead) { 
+		if (ETCInput.GetAxis("Horizontal") > 0.1f && !doorIn && !doorOut && !dead) { 
             transform.localScale = new Vector3(-1, 1, 1);
             isLeft = false;
         }
 
-        if (Input.GetButtonDown("Jump")  && !doorIn && !doorOut && !dead)
+
+
+		if (ETCInput.GetButtonDown("A") && !doorIn && !doorOut && !dead)
         {
             if (grounded)
             {
@@ -102,7 +107,7 @@ public class Player : MonoBehaviour
 
 
 
-        if (Input.GetButtonDown("Fire1") && !attacking && !doorIn && !doorOut && !dead)
+		if (ETCInput.GetButtonDown("Fire1") && !attacking && !doorIn && !doorOut && !dead)
         {
             attacking = true;
             attackTimer = attaclCd;
@@ -187,7 +192,7 @@ public class Player : MonoBehaviour
 
         if (!doorIn && !doorOut && !dead)
         {
-            float h = Input.GetAxis("Horizontal");
+			float h = ETCInput.GetAxis("Horizontal");
 
             rib2d.AddForce(Vector2.right * speed * h);
            if (rib2d.velocity.x >= MaxSpeed)
@@ -283,7 +288,7 @@ public class Player : MonoBehaviour
     public void addCoins(int c)
     {
 
-        SoundManager.instance.PlayingSound("GetCoin");
+        SoundManager.instance.PlayingSound("Coin");
         coins += c;
 
     }
@@ -377,4 +382,6 @@ public class Player : MonoBehaviour
             return false;
         }
     }
+
+
 }

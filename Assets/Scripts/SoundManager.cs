@@ -1,4 +1,3 @@
-﻿
 /// <summary>
 /// Sound manager.
 /// This script use for manager all sound(bgm,sfx) in game
@@ -8,83 +7,97 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class SoundManager : MonoBehaviour
-{
+public class SoundManager : MonoBehaviour {
+	
+	[System.Serializable]
+	public class SoundGroup{
+		public AudioClip audioClip;
+		public string soundName;
+        
+	}
 
-    [System.Serializable]
-    public class SoundGroup
-    {
-        public AudioClip audioClip;
-        public string soundName;
+	public GameObject camera;
+    private int lvl;
+	private bool isFxEnabled;
+    public  AudioSource bgmSound;
+	
+	public List<SoundGroup> sound_List = new List<SoundGroup>();
+	
+	public static SoundManager instance;
+	
+	public void Start(){
+		instance = this;
+        bgmSound.volume = PlayerPrefs.GetFloat("Musica",1);
+        
+		camera = GameObject.FindGameObjectWithTag ("MainCamera");
+		if(PlayerPrefs.GetInt("isMusicEnabled", 1) == 1)
+			Play();
+		else
+			Stop();
+
+		isFxEnabled = PlayerPrefs.GetInt("isSoundFxEnabled", 1) == 1;
+        //StartCoroutine(StartBGM());
     }
 
-    public GameObject camera;
-    public AudioSource bgmSound;
-
-    public List<SoundGroup> sound_List = new List<SoundGroup>();
-
-    public static SoundManager instance;
-
-    public void Start()
+    public void UpdateMusicVolume()
     {
-        instance = this;
-        StartCoroutine(StartBGM());
+        bgmSound.volume = PlayerPrefs.GetFloat("Musica");
     }
 
-    public void Play()
-    {
+    public void Play(){
+        lvl = PlayerPrefs.GetInt("Level",1);
+        //bgmSound.Stop();
         bgmSound.Play();
+	}
 
-    }
-    public void Stop()
-    {
+	public void Stop(){
+		bgmSound.Stop();
+	}
 
-        bgmSound.Stop();
-
-    }
     public void PlayUI()
     {
-
-        bgmSound.Play();
-
+		bgmSound.Play();
     }
+
     public void StopUI()
     {
-
-        bgmSound.Stop();
-
+		bgmSound.Stop();
     }
+
     public void PlayingSound(string _soundName)
     {
-        AudioSource.PlayClipAtPoint(sound_List[FindSound(_soundName)].audioClip, camera.transform.position);
-    }
-
-    private int FindSound(string _soundName)
+		if (isFxEnabled) {
+			AudioSource.PlayClipAtPoint (sound_List [FindSound (_soundName)].audioClip, camera.transform.position);
+		}
+	}
+	
+	private int FindSound(string _soundName)
     {
-        int i = 0;
-        while (i < sound_List.Count)
-        {
-            if (sound_List[i].soundName == _soundName)
-            {
-                return i;
-            }
-            i++;
-        }
-        return i;
-    }
-
-    void ManageBGM()
-    {
-        StartCoroutine(StartBGM());
-    }
-
-    //Start BGM when loading complete
-    IEnumerator StartBGM()
-    {
-        yield return new WaitForSeconds(0.5f);
-
-   
-        bgmSound.Play();
-    }
-
+		int i = 0;
+		while( i < sound_List.Count ){
+			if(sound_List[i].soundName == _soundName){
+				return i;	
+			}
+			i++;
+		}
+		return i;
+	}
+	
+	void ManageBGM()
+	{
+		StartCoroutine(StartBGM());
+	}
+	
+	//Start BGM when loading complete
+	IEnumerator StartBGM()
+	{
+		yield return new WaitForSeconds(0.5f);
+	    /*while(PatternSystem.instance.loadingComplete == false)
+		{
+			yield return 0;
+		}*/
+		//Debug.Log("play");
+		bgmSound.Play();
+	}
+	
 }

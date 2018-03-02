@@ -18,7 +18,7 @@ public class PauseMenu : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetButtonDown("Pause"))
+		if (ETCInput.GetButtonDown("Pause"))
             Paused = !Paused;
 
         if (Paused)

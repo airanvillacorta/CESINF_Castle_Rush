@@ -10,9 +10,11 @@ public class Sword : MonoBehaviour
 
     void Start()
     {
-
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+		
+			
         aisword = transform.parent.GetComponent<AISword>();
+		if(!aisword.menu)
+			player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     void OnTriggerEnter2D(Collider2D col)

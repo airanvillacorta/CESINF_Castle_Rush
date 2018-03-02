@@ -17,6 +17,7 @@ public class AISword : MonoBehaviour
 
     private Rigidbody2D rib2d;
     private Animator animator;
+	public bool menu;
 
 
 
@@ -24,7 +25,7 @@ public class AISword : MonoBehaviour
     void Start()
     {
 
-
+		if(!menu)
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
         animator = gameObject.GetComponent<Animator>();
@@ -43,22 +44,21 @@ public class AISword : MonoBehaviour
 
     void RangeCheck()
     {
+		if (!menu) {
 
-        distance = Vector3.Distance(transform.position, target.transform.position);
+			distance = Vector3.Distance (transform.position, target.transform.position);
 
-        if (distance < wakeRange)
-        {
-            awake = true;
+			if (distance < wakeRange) {
+				awake = true;
 
-        }
-        if (distance > wakeRange)
-        {
-            awake = false;
+			}
+			if (distance > wakeRange) {
+				awake = false;
 
-        }
+			}
 
-
-        if (awake)
+		}
+        if (awake || menu)
         {
             Move();
         }
@@ -72,8 +72,10 @@ public class AISword : MonoBehaviour
     {
         if (isLeft)
         {
-            transform.localScale = new Vector3(1, 1, 1);
-          
+			if(!menu)
+				transform.localScale = new Vector3(1, 1, 1);
+			else
+				transform.localScale = new Vector3(2, 2, 2);
            
 
                 rib2d.AddForce(Vector2.right * -speed);
@@ -84,7 +86,10 @@ public class AISword : MonoBehaviour
         }
         else
         {
+			if(!menu)
             transform.localScale = new Vector3(-1, 1, 1);
+			else
+				transform.localScale = new Vector3(-2, 2, 2);
             rib2d.AddForce(Vector2.right * speed);
 
             if (rib2d.velocity.x >= 1f)

@@ -6,17 +6,25 @@ public class Door : MonoBehaviour
     public bool isEnd;
     public bool isLeft;
     private Player player;
+	public bool pressed;
     // Use this for initialization
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
+	void Update(){
+
+		pressed=ETCInput.GetButtonDown("A");
+
+	}
+
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.CompareTag("Player"))
         {
-            if (Input.GetButtonDown("Up"))
+			
+			if (pressed)
             {
                 if (isEnd)
                 {
@@ -39,7 +47,7 @@ public class Door : MonoBehaviour
         if (col.CompareTag("Player"))
         {
 			
-            if (Input.GetButtonDown("Up"))
+			if (pressed)
             {
 
                 if (isEnd)
